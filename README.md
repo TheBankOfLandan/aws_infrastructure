@@ -1,6 +1,4 @@
-## Project Title
-
-AWS Infrastructure
+## AWS Infrastructure
 
 001 - Network : Progress
 
