@@ -17,6 +17,3 @@
 ## Authors
 
 ## Contributors
-
-Amir Bitarafan
-Shariq Mustaquim
