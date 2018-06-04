@@ -57,12 +57,35 @@ resource "aws_subnet" "private_subnet" {
   }
 }
 
+/* Data subnet */
+resource "aws_subnet" "data_subnet" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  cidr_block              = "${var.data_subnet_cidr}"
+  map_public_ip_on_launch = false
+  availability_zone       = "${var.availability_zone}"
+
+  tags {
+    Name        = "${var.environment}-data-subnet"
+    Environment = "${var.environment}"
+  }
+}
+
 /* Routing table for private subnet */
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
     Name        = "${var.environment}-private-route-table"
+    Environment = "${var.environment}"
+  }
+}
+
+/* Routing table for data subnet */
+resource "aws_route_table" "data" {
+  vpc_id = "${aws_vpc.vpc.id}"
+
+  tags {
+    Name        = "${var.environment}-data-route-table"
     Environment = "${var.environment}"
   }
 }
@@ -98,6 +121,11 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table_association" "private" {
   subnet_id       = "${aws_subnet.private_subnet.id}"
   route_table_id  = "${aws_route_table.private.id}"
+}
+
+resource "aws_route_table_association" "data" {
+  subnet_id       = "${aws_subnet.data_subnet.id}"
+  route_table_id  = "${aws_route_table.data.id}"
 }
 
 /* Default security group */
